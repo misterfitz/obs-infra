@@ -1,6 +1,6 @@
 resource "aws_prometheus_workspace" "this" {
   alias             = var.workspace_alias
-  retention_in_days = var.retention_in_days
+  # retention_in_days = var.retention_in_days
 }
 
 resource "aws_prometheus_alert_manager_definition" "this" {

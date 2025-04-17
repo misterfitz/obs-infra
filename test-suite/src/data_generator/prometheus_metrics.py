@@ -33,7 +33,7 @@ class PrometheusMetricsGenerator:
     
     def __init__(self, 
                 push_gateway_url: Optional[str] = None,
-                simulate_app_name: str = "mock-financial-app"):
+                simulate_app_name: str = "mock-obs-app"):
         self.registry = CollectorRegistry()
         self.push_gateway_url = push_gateway_url
         self.simulate_app_name = simulate_app_name

@@ -1,4 +1,4 @@
-.PHONY: setup start stop test terraform-init terraform-apply terraform-destroy lint format
+.PHONY: setup start stop test terraform-init terraform-plan terraform-apply terraform-destroy lint format
 
 # Variables
 COMPOSE_FILE=docker-compose.yml
@@ -22,13 +22,17 @@ stop:
 # Run all tests
 test:
 	@echo "Running all tests..."
-	docker-compose -f $(COMPOSE_FILE) exec test-runner financial-test compliance-scan --region us-gov-west-1
-	docker-compose -f $(COMPOSE_FILE) exec test-runner financial-test fuzz --base-url http://localstack:4566 --endpoints /api/v1/payments /api/v1/accounts
+	docker-compose -f $(COMPOSE_FILE) exec test-runner obs-infra-test compliance-scan --region us-gov-west-1
+	docker-compose -f $(COMPOSE_FILE) exec test-runner obs-infra-test fuzz --base-url http://localstack:4566 --endpoints /api/v1/payments /api/v1/accounts
 
 # Initialize Terraform
 terraform-init:
 	@echo "Initializing Terraform..."
 	cd terraform && terraform init
+
+terraform-plan:
+	@echo "Planning Terraform configuration..."
+	cd terraform && terraform plan
 
 # Apply Terraform configuration
 terraform-apply:

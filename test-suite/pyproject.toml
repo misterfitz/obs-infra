@@ -1,9 +1,9 @@
 # test-suite/pyproject.toml
 [tool.poetry]
-name = "financial-infrastructure-testing"
+name = "obs-infra-testing"
 version = "0.1.0"
-description = "Comprehensive testing suite for financial infrastructure"
-authors = ["Your Name <your.email@example.com>"]
+description = "Comprehensive testing suite for observability infrastructure"
+authors = ["Ryan Fitzgerald"]
 license = "MIT"
 readme = "README.md"
 
@@ -24,7 +24,7 @@ flake8 = "^6.0.0"
 mypy = "^1.4.1"
 
 [tool.poetry.scripts]
-financial-test = "src.cli:cli"
+obs-infra-test = "src.cli:cli"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

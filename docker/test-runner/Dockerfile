@@ -34,11 +34,11 @@ COPY test-suite/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the CLI script
-COPY test-suite/src/cli.py /usr/local/bin/financial-test
-RUN chmod +x /usr/local/bin/financial-test
+COPY test-suite/src/cli.py /usr/local/bin/obs-infra-test
+RUN chmod +x /usr/local/bin/obs-infra-test
 
 # Set up environment
 ENV PYTHONPATH=/app/test-suite
 
 # Set entrypoint
-ENTRYPOINT ["financial-test"]
+ENTRYPOINT ["obs-infra-test"]

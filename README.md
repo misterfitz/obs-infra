@@ -25,8 +25,8 @@ A comprehensive infrastructure and testing suite for AWS observability stack inc
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/observability-infrastructure.git
-   cd observability-infrastructure
+   git clone https://github.com/misterfitz/obs-infra.git
+   cd obs-infra
    ```
 
 2. Set up the project:
@@ -100,11 +100,10 @@ The Terraform code provisions the following components:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-
 ## Structure 
 
 ```
-financial-infrastructure-testing/
+obs-infra-testing/
 ├── .github/                       # GitHub workflows and CI/CD
 │   └── workflows/
 │       ├── ci.yml                 # CI workflow 
@@ -146,7 +145,7 @@ financial-infrastructure-testing/
 │   ├── setup.py                   # Package setup
 │   └── requirements.txt           # Dependencies
 ├── dashboards/                    # Grafana dashboards
-│   ├── financial_metrics.json     # Financial metrics dashboard
+│   ├── metrics.json     # Financial metrics dashboard
 │   ├── infrastructure.json        # Infrastructure dashboard
 │   ├── security.json              # Security dashboard
 │   └── cost_optimization.json     # Cost optimization dashboard
