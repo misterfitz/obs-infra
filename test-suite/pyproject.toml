@@ -1,0 +1,42 @@
+# test-suite/pyproject.toml
+[tool.poetry]
+name = "financial-infrastructure-testing"
+version = "0.1.0"
+description = "Comprehensive testing suite for financial infrastructure"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+boto3 = "^1.28.0"
+requests = "^2.31.0"
+click = "^8.1.4"
+pandas = "^2.0.3"
+prometheus-client = "^0.17.1"
+kubernetes = "^27.2.0"
+pydantic = "^2.1.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+black = "^23.7.0"
+flake8 = "^6.0.0"
+mypy = "^1.4.1"
+
+[tool.poetry.scripts]
+financial-test = "src.cli:cli"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true

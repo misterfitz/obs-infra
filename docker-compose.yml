@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: obs-localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3,ec2,iam,eks,cloudwatch,sns,sqs,dynamodb,lambda,rds,elbv2,amp,amg
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./docker/localstack/init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: obs-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    depends_on:
+      - localstack
+      - grafana
+
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: obs-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning
+      - ./dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - localstack
+
+  test-runner:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/test-runner/Dockerfile
+    container_name: obs-test-runner
+    volumes:
+      - .:/app
+      - ~/.aws:/root/.aws:ro
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - PROMETHEUS_URL=http://prometheus:9090
+      - GRAFANA_URL=http://grafana:3000
+      - PYTHONPATH=/app/test-suite
+    depends_on:
+      - localstack
+      - prometheus
+      - grafana
+    command: tail -f /dev/null  # Keep container running for exec
+
+volumes:
+  prometheus-data:
+  grafana-data:
